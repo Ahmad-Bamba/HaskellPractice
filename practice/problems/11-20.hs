@@ -61,6 +61,36 @@ dropEvery (x:xs) n = dropEvery' (x:xs) n 1 where
     dropEvery' [] _ _ = []
     divides x y = y `mod` x == 0
 
+-- 17
+
+splitAt' :: [a] -> Int -> ([a], [a])
+splitAt' list at = (cut list at, [fst (x,y) | (x,y) <- zip list [1..], y > at]) where
+    cut [] _ = []
+    cut _ 0 = []
+    cut (x:xs) at = x:(cut xs (at - 1))
+
+-- 18
+
+getSlice :: [a] -> Int -> Int -> [a]
+getSlice list start end = [fst (x, y) | (x, y) <- zip list [1..], y >= start, y <= end]
+
+-- 19
+
+rotate :: [a] -> Int -> [a]
+rotate list by
+    | abs by > length list = error "Hey man, maybe don't pull stupid shit."
+    | by == 0 = list
+    | by > 0 = snd split ++ fst split
+    | otherwise = snd rSplit ++ fst rSplit
+    where
+        split = splitAt by list
+        rSplit = splitAt ((length list) - abs by) list
+
+-- 20
+
+removeAt :: [a] -> Int -> [a]
+removeAt list at = [fst (x, y) | (x,y) <- zip list [1..], not (y == at)]
+
 -- Extras 1
 
 checkListVals :: (Int -> Bool) -> [Int] -> [Bool]
